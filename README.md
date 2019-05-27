@@ -1,7 +1,7 @@
 ## Ereloonnota - Fee note
 
 This script helps in drafting monthly fee notes by providing an overview of the worked hours per day and per project phase, based on your calendar. 
-To do so, it fetches emails with a Calendar (*.ics file) attachement send to a dedicated emailbox and answers the mail with an excel report with the aggregated hours per date and project.
+To do so, it fetches emails with a Calendar (*.ics file) attachement that are sent to a dedicated emailbox and answers the mail with an excel report with the aggregated hours per date and project.
 
 #### Good to know
 
