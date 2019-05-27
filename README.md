@@ -5,6 +5,8 @@ To do so, it fetches emails with a Calendar (*.ics file) attachement that are se
 
 #### Good to know
 
+The script runs every 5 minutes. Hence, it can take up to 5 minutes for the request to receive an answer.
+
 The processing logic assumes a certain naming convention for calendar 
 events. Rules that have been implemented for processing the Calendar:
 * the script considers all events present in the Calendar attachement. It is the responsibility of the sender to specify the dates for which a report is desired correctly;
@@ -20,7 +22,7 @@ Enforcing the events to contain an underscore is neccessary to prohibit certain 
 
 Special measures have been set to ensure privacy:
 * the mailbox is dedicated for this purpose, the credentials can be distributed to the ones interested to verify;
-* the script runs every 5 minutes. When running, received messages, if any, are processed and deleted immediately. Thus, messages sent to this mailbox will be in the emailserver for maximum 5 minutes, 2.5 minutes on average;
+* the script runs every 5 minutes. When running, received messages, if any, are processed and deleted immediately. Thus, messages sent to this mailbox will be in the emailserver for no longer than 5 minutes;
 * the downloaded .ics attachment is deleted at the end of the script;
 * the report that is composed is deleted at the end of the script;
 * the reply with the report is deleted at the end of the script.
