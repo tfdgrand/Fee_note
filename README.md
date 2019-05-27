@@ -14,7 +14,7 @@ events. Rules that have been implemented for processing the Calendar:
 
 Thus, calendar events should ideally be named in the form of "PROJECT_phase additional explanation", e.g. "CAVD_presentatie sketch-up badkamers". 
 The latter part, "sketch-up badkamer" comes after the first space, therefore it will be ignored in the report, but allows to add enough information on calendar events. 
-This logic is neccessary to prohibit certain (full day) non-relevant events, such as 'verjaardag persoon x' to be counted as billable hours.   
+Enforcing the events to contain an underscore is neccessary to prohibit certain (full day) non-relevant events, such as 'verjaardag persoon x' to be counted as billable hours.   
 
 #### GDPR
 
