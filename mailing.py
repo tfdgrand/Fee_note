@@ -64,7 +64,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg['To'] = email_from_email_address
         msg['Subject'] = email_subject + ' : Invalid request'  
 
-        body = 'Dear, \n\nYour request was invalid. Please have a look at the README(add url) and retry.'
+        body = 'Dear, \n\nYour request was invalid. Please have a look at the README (https://github.com/tfdgrand/Fee_note) and retry.'
         msg.attach(MIMEText(body,'plain'))
 
         text = msg.as_string()
