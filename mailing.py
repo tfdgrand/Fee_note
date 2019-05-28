@@ -1,5 +1,3 @@
-#!/user/bin/python
-
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -66,7 +64,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg['To'] = email_from_email_address
         msg['Subject'] = email_subject + ' : Invalid request'  
 
-        body = 'Dear, \n\nYour request was invalid. Please have a look at the README (https://github.com/tfdgrand/Fee_note) and retry.'
+        body = 'Dear, \n\nYour request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nKind regards'
         msg.attach(MIMEText(body,'plain'))
 
         text = msg.as_string()
@@ -125,9 +123,15 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         for num in data[0].split():
            mail.store(num, '+FLAGS', '\\Deleted')
         mail.expunge()
-        print('Message deleted!')
+        print('Inbox message deleted!')
         
-        #mail2 = mail.select('Sent')
+        
+        mail.select('"[Gmail]/Verzonden berichten"')
+        typ, data = mail.search(None,'ALL')
+        for num in data[0].split():
+           mail.store(num, '+FLAGS', '\\Deleted')
+        mail.expunge()
+        print('Sent message deleted!')
         #mail.store("1:*", '+FLAGS', '\\Deleted')
         #mail.expunge()
         

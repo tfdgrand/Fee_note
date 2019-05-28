@@ -1,5 +1,3 @@
-#!/user/bin/python
-
 from ics import Calendar
 from datetime import datetime
 import pandas as pd
@@ -8,6 +6,7 @@ from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 import os
 import sys
+import iso8601
 
 class ProcessClass:
 
@@ -20,15 +19,15 @@ class ProcessClass:
 
     def createEventTable(self, c):
         eventdf = pd.DataFrame(columns=['Projectnaam', 'Day', 'Duur'])
-        last = datetime.strptime(str(c.events[0].begin), "%Y-%m-%dT%H:%M:%S%z") #FIFO
-        first = datetime.strptime(str(c.events[len(c.events)-1].begin), "%Y-%m-%dT%H:%M:%S%z")
+        last = iso8601.parse_date(str(c.events[0].begin)) #FIFO"%Y-%m-%dT%H:%M:%S%z")
+        first = iso8601.parse_date(str(c.events[len(c.events)-1].begin))
 
         for e in c.events:
-            start = datetime.strptime(str(e.begin), "%Y-%m-%dT%H:%M:%S%z")
+            start = iso8601.parse_date(str(e.begin))
             if (e.name is not None): # extra condition: e.g. "& (start.year == 2019) & (start.month == 4)": Get year and month from user input. e.g. mail with subject 2019-05, return mail with hours
                 try:
                     if("_" in e.name):
-                        end = datetime.strptime(str(e.end), "%Y-%m-%dT%H:%M:%S%z")
+                        end = iso8601.parse_date(str(e.end))
                         duration = end - start
                         project = e.name.split(' ')[0] 
                         day = start.day # +'/'+ str(start.month)
@@ -48,10 +47,11 @@ class ProcessClass:
     def addDuration(self, eventdf, hourTable):
         for row in eventdf.itertuples():
             r = hourTable.loc[hourTable['Projectnaam']==row.Projectnaam].index
-            if pd.isnull(hourTable.iloc[r,row.Day]).bool():
-                hourTable.at[r, row.Day] = row.Duur
+            if pd.isnull(hourTable.iloc[r,int(row.Day)]).bool():
+                hourTable.at[r, int(row.Day)] = row.Duur
             else:
-                hourTable.at[r, row.Day] = hourTable.iloc[r, row.Day] + row.Duur
+                hourTable.at[r, int(row.Day)] = hourTable.iloc[r, int(row.Day)] + row.Duur
+        print("Report created!")
         return hourTable
 
     def editExcel(self, file_attached, first, last):

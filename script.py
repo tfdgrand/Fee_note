@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from mailing import EmailClass
 from processing import ProcessClass
