@@ -50,7 +50,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
                 continue
             fileName = part.get_filename()
             print(fileName)
-            if bool(fileName) and "Calendar" in fileName:
+            if bool(fileName) and "Calendar.ics" in fileName:
                 filePath = os.path.join(os.getcwd(), fileName)
                 with open(filePath, 'wb') as f:
                     f.write(part.get_payload(decode=True))
