@@ -1,9 +1,10 @@
-#import re as regex
+#!/usr/bin/python
+
 from mailing import EmailClass
 from processing import ProcessClass
 import sys
 import credentials
-
+import requests
 
 if __name__ == "__main__":
     

@@ -1,3 +1,5 @@
+#!/user/bin/python
+
 from ics import Calendar
 from datetime import datetime
 import pandas as pd
