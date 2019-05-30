@@ -14,8 +14,8 @@ events. Rules that have been implemented for processing the Calendar:
 * the names of the calendar events are cut off at the first space (" ");
 * finally, duration of events are added based on date and project name.
 
-Thus, calendar events should ideally be named in the form of "PROJECT_phase additional explanation", e.g. "CAVD_presentatie sketch-up badkamers". 
-The latter part, "sketch-up badkamer" comes after the first space, therefore it will be ignored in the report, but allows to add enough information on calendar events. 
+Thus, calendar events should ideally be named in the form of "PROJECT_phase additional explanation", e.g. "CAVD_presentatie sketch-up". 
+The latter part, "sketch-up" comes after the first space, therefore it will be ignored in the report, but allows to add enough information on calendar events. 
 Enforcing the events to contain an underscore is neccessary to prohibit certain (full day) non-relevant events, such as 'verjaardag persoon x' to be counted as billable hours.   
 
 #### GDPR
