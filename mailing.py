@@ -48,10 +48,9 @@ class EmailClass: # This class handles all functions related to fetching, downlo
                 continue
             if part.get('Content-Disposition') is None:
                 continue
-            fileName = part.get_filename()
-            print(fileName)
             if bool(fileName) and "Calendar.ics" in fileName:
-                filePath = os.path.join(os.getcwd(), fileName)
+                fileName = part.get_filename()
+		filePath = os.path.join(os.getcwd(), fileName)
                 with open(filePath, 'wb') as f:
                     f.write(part.get_payload(decode=True))
                     print("Saved attachment: " + fileName)
