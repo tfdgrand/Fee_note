@@ -63,7 +63,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg['To'] = email_from_email_address
         msg['Subject'] = email_subject + ' : Invalid request'  
 
-        body = 'Dear, \n\nYour request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nKind regards'
+        body = 'Dear Sir/Madam, \n\nYour request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nKind regards,\nYour favorite hour calculator'
         msg.attach(MIMEText(body,'plain'))
 
         text = msg.as_string()
