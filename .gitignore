@@ -3,3 +3,4 @@ __pycache__/*
 *.pyc
 pipfile
 pipfile.lock
+__init__.py
