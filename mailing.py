@@ -55,7 +55,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
                     f.write(part.get_payload(decode=True))
                     print("Saved attachment: " + fileName)
             else:
-                return None
+                fileName = None
         return fileName
     
     def sendNegativeResponse(self, email_from_email_address, email_subject):
