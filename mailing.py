@@ -93,7 +93,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg = MIMEMultipart()
         msg['From'] = self.email_address
         msg['To'] = email_from_email_address
-        msg['Subject'] = email_subject + ' : Ereloonnota - Fee note'  
+        msg['Subject'] = email_subject + ' : Hour calculator report'  
 
         name = email_from_name
         body = 'Dear '+ name + ',\n\nAccording to your agenda, you have worked ' + str(eventTable['Duur'].sum()) + ' hours last month. \nIn attachment, you can find the worked hours per project phase, as they appeared in your agenda.\n\nFor checking purposes, the hours worked per day were as follows:\n\n' + eventTable.groupby('Day').sum()['Duur'].to_string() + '\n\n\nHope this helps. \nSee you next month!' 
