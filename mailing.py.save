@@ -49,13 +49,13 @@ class EmailClass: # This class handles all functions related to fetching, downlo
             if part.get('Content-Disposition') is None:
                 continue
             fileName = part.get_filename()
+            print(fileName)
             if bool(fileName) and "Calendar.ics" in fileName:
-                filePath = os.path.join(os.getcwd(), fileName)
+                
+filePath = os.path.join(os.getcwd(), fileName)
                 with open(filePath, 'wb') as f:
                     f.write(part.get_payload(decode=True))
                     print("Saved attachment: " + fileName)
-            else:
-                return None
         return fileName
     
     def sendNegativeResponse(self, email_from_email_address, email_subject):
@@ -65,7 +65,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg['To'] = email_from_email_address
         msg['Subject'] = email_subject + ' : Invalid request'  
 
-        body = 'Dear Sir/Madam, \n\nYour request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!'
+        body = 'Dear, \n\nYour request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nKind regards'
         msg.attach(MIMEText(body,'plain'))
 
         text = msg.as_string()
