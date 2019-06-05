@@ -39,7 +39,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
 
         email_from = headers['From']
         log_file = open('log.txt', 'a')
-        log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from)
+        log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from + "\n")
         email_subject = 'RE: ' + headers['Subject']
         email_from_name, email_from_email_address = email.utils.parseaddr(email_from)
         return email_from_name, email_from_email_address, email_subject, msg
