@@ -21,11 +21,22 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         self.send_server_port  = send_server_port
     
     def loginMailServer(self):
+        '''
+        Log in to the mail server using IMAP
+        
+        Returns type impaplib.IMP4_SSL 
+        '''
         mail = imaplib.IMAP4_SSL(self.email_server, self.email_server_port)
         mail.login(self.email_address, self.email_password)
         return mail
     
     def checkMails(self, mail):
+        '''
+        Function to check if any new mails have arrived.
+        
+        Input parameter type impaplib.IMP4_SSL 
+        Returns string
+        '''
         status, count = mail.select('Inbox')  
         count = str(count[0])[2:-1]
         #count = str(count)[3:-2] #get rid of [b'1']
@@ -33,6 +44,12 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         return count
     
     def getHeaders(self, mail):
+        '''
+        Function to get the headersfields of the email: 
+        
+        Input parameter type impaplib.IMP4_SSL in state selected (i.e. there must be a preceding mail.select('Inbox') statement)
+        Returns sender's name (string), sender's email address (string), the email subject (string), the email message (email.message.Message)
+        '''
         result, data = mail.fetch(b'1', '(RFC822)')
         headers= HeaderParser().parsestr(data[0][1].decode('utf-8')) #https://stackoverflow.com/questions/703185/using-email-headerparser-with-imaplib-fetch-in-python
         msg = email.message_from_bytes(data[0][1])
@@ -45,6 +62,12 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         return email_from_name, email_from_email_address, email_subject, msg
     
     def get_attachment(self, msg):
+        '''
+        Function to download the relevant attachment of the mail
+        
+        Input parameter: email message (email.message.Message)
+        Returns: fileName (string)
+        '''
         fileName = None
         for part in msg.walk():
             if part.get_content_maintype()=='multipart':
@@ -62,7 +85,11 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         return fileName
     
     def sendNegativeResponse(self, email_from_email_address, email_subject):
-        #Also send response? : "Your request was invalid. Please have a look at the README(url) and retry"
+        '''
+        Send email to the requester to say the request was invalid.
+        
+        Input parameters: email address (string), email subject (string)
+        '''
         msg = MIMEMultipart()
         msg['From'] = self.email_address
         msg['To'] = email_from_email_address
@@ -121,7 +148,9 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         
     def deleteMessages(self, mail):
         '''
-        Delete message at hand (always b'1', the oldest message in the inbox). 'Sent' box
+        Deletes the processed message in the Inbox, and the 'Sent box'.
+        
+        Input parameter type impaplib.IMP4_SSL in state selected
         '''
         mail.store(b'1', '+X-GM-LABELS', '\\Trash')
         mail.expunge()
@@ -144,6 +173,9 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         
         
     def logOut(self, mail):
+        '''
+        Input parameter type impaplib.IMP4_SSL
+        '''
         mail.close()
         mail.logout()
         print('Logged out')
