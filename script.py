@@ -12,7 +12,7 @@ if __name__ == "__main__":
     m = EmailClass(credentials.email_address, credentials.email_password, credentials.email_server, credentials.email_server_port, credentials.send_server, credentials.send_server_port)
     
     mail = m.loginMailServer()
-    file_attached = "fee_note.xlsx"
+    file_attached = "hour_report.xlsx"
     try:
         count = int(m.checkMails(mail))
     except ValueError:
