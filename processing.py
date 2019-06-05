@@ -14,10 +14,14 @@ class ProcessClass:
         self.filename = filename
 
     def readData(self):
-        c = Calendar(open(self.filename,'rb').read().decode('iso-8859-1')) #change name to corresponding attachement
+        c = Calendar(open(self.filename,'rb').read().decode('iso-8859-1'))
         return c
 
     def createEventTable(self, c):
+        '''
+        Expects: Calendar file, read with Calendar class
+        Returns: pandas dataframe, date of first event, date of last event, in iso8601
+        '''
         eventdf = pd.DataFrame(columns=['Projectnaam', 'Day', 'Duur'])
         last = iso8601.parse_date(str(c.events[0].begin)) #FIFO"%Y-%m-%dT%H:%M:%S%z")
         first = iso8601.parse_date(str(c.events[len(c.events)-1].begin))
@@ -38,6 +42,10 @@ class ProcessClass:
         return eventdf, last, first
 
     def createHourTable(self,eventdf):
+        '''
+        Expects: pandas dataframe
+        Returns: pandas dataframe
+        '''
         columnNames=[x for x in range(1,32)]
         columnNames = ["Projectnaam"]+columnNames
         projectNames = {"Projectnaam" : sorted(eventdf['Projectnaam'].unique())} 

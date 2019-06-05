@@ -8,6 +8,7 @@ import email
 from email.parser import HeaderParser
 import smtplib
 import os
+from datetime import datetime
 
 class EmailClass: # This class handles all functions related to fetching, downloading, and sending mails 
     
@@ -37,6 +38,8 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg = email.message_from_bytes(data[0][1])
 
         email_from = headers['From']
+        log_file = open('log.txt', 'a')
+        log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from)
         email_subject = 'RE: ' + headers['Subject']
         email_from_name, email_from_email_address = email.utils.parseaddr(email_from)
         return email_from_name, email_from_email_address, email_subject, msg
@@ -118,23 +121,26 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         
     def deleteMessages(self, mail):
         '''
-        Delete message at hand (always b'1', the oldest message in the box) and 'Sent' box
+        Delete message at hand (always b'1', the oldest message in the inbox). 'Sent' box
         '''
-        typ, data = mail.search(None, b'1')
-        for num in data[0].split():
-           mail.store(num, '+FLAGS', '\\Deleted')
+        mail.store(b'1', '+X-GM-LABELS', '\\Trash')
         mail.expunge()
-        print('Inbox message deleted!')
+        print('Inbox message moved to Trash!')
         
         
         mail.select('"[Gmail]/Verzonden berichten"')
         typ, data = mail.search(None,'ALL')
         for num in data[0].split():
-           mail.store(num, '+FLAGS', '\\Deleted')
+           mail.store(num, '+X-GM-LABELS', '\\Trash')
         mail.expunge()
-        print('Sent message deleted!')
-        #mail.store("1:*", '+FLAGS', '\\Deleted')
-        #mail.expunge()
+        print('Sent message moved to Trash!')
+
+        mail.select('"[Gmail]/Prullenbak"')
+        typ, data = mail.search(None,'ALL')
+        for num in data[0].split():
+            mail.store(num, '+FLAGS', '\\Deleted')
+        mail.expunge()
+        print('Trash box emptied!')
         
         
     def logOut(self, mail):

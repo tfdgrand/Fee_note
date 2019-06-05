@@ -4,3 +4,4 @@ __pycache__/*
 pipfile
 pipfile.lock
 __init__.py
+log.txt
