@@ -56,6 +56,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
 
         email_from = headers['From']
         log_file = open('/home/pi/Fee_note/log.txt', 'a')
+        print("Writing log file")
         log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from + "\n")
         log_file.close()
         
