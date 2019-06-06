@@ -62,7 +62,6 @@ class EmailClass: # This class handles all functions related to fetching, downlo
             log_file.close()
         except:
             print("Writing log file failed..")
-            except Exception as e: print(e)
         
         email_subject = 'RE: ' + headers['Subject']
         email_from_name, email_from_email_address = email.utils.parseaddr(email_from)
