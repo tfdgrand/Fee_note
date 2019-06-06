@@ -55,14 +55,9 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg = email.message_from_bytes(data[0][1])
 
         email_from = headers['From']
-        try:
-            log_file = open('log.txt', 'a')
-            print("Writing log file")
-            log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from + "\n")
-            log_file.close()
-        except:
-            print("Writing log file failed..")
-            except Exception as e: print(e)
+        log_file = open('/home/pi/Fee_note/log.txt', 'a')
+        log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from + "\n")
+        log_file.close()
         
         email_subject = 'RE: ' + headers['Subject']
         email_from_name, email_from_email_address = email.utils.parseaddr(email_from)

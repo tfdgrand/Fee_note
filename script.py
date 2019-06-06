@@ -42,4 +42,3 @@ if __name__ == "__main__":
                 count = int(m.checkMails(mail))
                 p.deleteFile(file_attached)
         m.logOut(mail)
-
