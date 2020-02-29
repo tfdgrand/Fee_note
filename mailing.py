@@ -10,6 +10,7 @@ import smtplib
 import os
 from datetime import datetime
 
+
 class EmailClass: # This class handles all functions related to fetching, downloading, and sending mails 
     
     def __init__(self, email_address, email_password, email_server, email_server_port, send_server, send_server_port ):
@@ -55,7 +56,8 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg = email.message_from_bytes(data[0][1])
 
         email_from = headers['From']
-        log_file = open('/home/pi/Fee_note/log.txt', 'a')
+	ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) #This is the project root
+        log_file = open(os.path.join(ROOT_DIR, 'log.txt'), 'a')
         print("Writing log file")
         log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from + "\n")
         log_file.close()
