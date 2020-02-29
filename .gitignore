@@ -4,4 +4,4 @@ pipfile
 pipfile.lock
 credentials.py
 log.txt
-
+.DS_Store
