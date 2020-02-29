@@ -56,8 +56,8 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg = email.message_from_bytes(data[0][1])
 
         email_from = headers['From']
-	    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-	    log_file = open(os.path.join(ROOT_DIR, 'log.txt'), 'a')
+        ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+        log_file = open(os.path.join(ROOT_DIR, 'log.txt'), 'a')
         print("Writing log file")
         log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from + "\n")
         log_file.close()
