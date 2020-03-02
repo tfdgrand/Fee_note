@@ -23,8 +23,8 @@ class ProcessClass:
         Returns: pandas dataframe, date of first event, date of last event, in iso8601
         '''
         eventdf = pd.DataFrame(columns=['Projectnaam', 'Day', 'Duur'])
-        last = iso8601.parse_date(str(c.events[0].begin)) #FIFO"%Y-%m-%dT%H:%M:%S%z")
-        first = iso8601.parse_date(str(c.events[len(c.events)-1].begin))
+        last = iso8601.parse_date(str(list(c.events)[0].begin)) #FIFO"%Y-%m-%dT%H:%M:%S%z")
+        first = iso8601.parse_date(str(list(c.events)[len(list(c.events))-1].begin))
 
         for e in c.events:
             start = iso8601.parse_date(str(e.begin))
