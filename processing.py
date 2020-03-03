@@ -22,7 +22,8 @@ class ProcessClass:
         Expects: Calendar file, read with Calendar class
         Returns: pandas dataframe, date of first event, date of last event, in iso8601
         '''
-        c_list = list(c.events).sort()
+        c_list = list(c.events)
+        c_list.sort()
         eventdf = pd.DataFrame(columns=['Projectnaam', 'Day', 'Duur'])
         last = iso8601.parse_date(str(c_list[0].begin)) #FIFO"%Y-%m-%dT%H:%M:%S%z")
         first = iso8601.parse_date(str(c_list[len(c_list)-1].begin))
