@@ -15,7 +15,6 @@ class ProcessClass:
 
     def readData(self):
         c = Calendar(open(self.filename,'rb').read().decode('iso-8859-1'))
-        c.events.sort()
         return c
 
     def createEventTable(self, c):
@@ -23,9 +22,10 @@ class ProcessClass:
         Expects: Calendar file, read with Calendar class
         Returns: pandas dataframe, date of first event, date of last event, in iso8601
         '''
+        c_list = list(c.events).sort()
         eventdf = pd.DataFrame(columns=['Projectnaam', 'Day', 'Duur'])
-        last = iso8601.parse_date(str(list(c.events)[0].begin)) #FIFO"%Y-%m-%dT%H:%M:%S%z")
-        first = iso8601.parse_date(str(list(c.events)[len(list(c.events))-1].begin))
+        last = iso8601.parse_date(str(c_list[0].begin)) #FIFO"%Y-%m-%dT%H:%M:%S%z")
+        first = iso8601.parse_date(str(c_list[len(c_list)-1].begin))
 
         for e in c.events:
             start = iso8601.parse_date(str(e.begin))
