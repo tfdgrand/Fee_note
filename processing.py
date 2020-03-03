@@ -15,8 +15,8 @@ class ProcessClass:
 
     def readData(self):
         c = Calendar(open(self.filename,'rb').read().decode('iso-8859-1'))
-	c.events.sort()        
-	return c
+	    c.events.sort()        
+	    return c
 
     def createEventTable(self, c):
         '''
