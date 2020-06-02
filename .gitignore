@@ -1,7 +1,9 @@
+.idea/
 __pycache__/*
 *.pyc
 pipfile
 pipfile.lock
-credentials.py
-log.txt
+assets/*
 .DS_Store
+src/__init__.py
+

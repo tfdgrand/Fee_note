@@ -9,9 +9,10 @@ from email.parser import HeaderParser
 import smtplib
 import os
 from datetime import datetime
+from definitions import ASSET_PATH
 
 
-class EmailClass: # This class handles all functions related to fetching, downloading, and sending mails 
+class EmailClass:  # This class handles all functions related to fetching, downloading, and sending mails
     
     def __init__(self, email_address, email_password, email_server, email_server_port, send_server, send_server_port ):
         self.email_address = email_address
@@ -21,7 +22,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         self.send_server = send_server
         self.send_server_port  = send_server_port
     
-    def loginMailServer(self):
+    def login_mail_server(self):
         '''
         Log in to the mail server using IMAP
         
@@ -31,7 +32,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         mail.login(self.email_address, self.email_password)
         return mail
     
-    def checkMails(self, mail):
+    def check_mails(self, mail):
         '''
         Function to check if any new mails have arrived.
         
@@ -44,7 +45,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         #unreadCount = regex.search("UNSEEN (\d+)", mail.status("INBOX", "(UNSEEN)")[1][0].decode('utf-8')).group(1)
         return count
     
-    def getHeaders(self, mail):
+    def get_headers(self, mail):
         '''
         Function to get the headersfields of the email: 
         
@@ -56,12 +57,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg = email.message_from_bytes(data[0][1])
 
         email_from = headers['From']
-        ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-        log_file = open(os.path.join(ROOT_DIR, 'log.txt'), 'a')
-        print("Writing log file")
-        log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from + "\n")
-        log_file.close()
-        
+
         email_subject = 'RE: ' + headers['Subject']
         email_from_name, email_from_email_address = email.utils.parseaddr(email_from)
         return email_from_name, email_from_email_address, email_subject, msg
@@ -89,7 +85,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
                 fileName = None
         return fileName
     
-    def sendNegativeResponse(self, email_from_email_address, email_subject):
+    def send_negative_response(self, email_from_email_address, email_subject, scenario):
         '''
         Send email to the requester to say the request was invalid.
         
@@ -98,10 +94,17 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         msg = MIMEMultipart()
         msg['From'] = self.email_address
         msg['To'] = email_from_email_address
-        msg['Subject'] = email_subject + ' : Invalid request'  
+        msg['Subject'] = email_subject + ' : Invalid request'
 
-        body = 'Dear Sir/Madam, \n\nYour request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!'
-        msg.attach(MIMEText(body,'plain'))
+        if scenario == "attachment":
+            body = 'Dear Sir/Madam, \n\nIt seems that your email had no attachment. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!'
+            msg.attach(MIMEText(body,'plain'))
+        elif scenario == 'empty_calendar':
+            body = 'Dear Sir/Madam, \n\nIt seems that your calendar has no events. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!'
+            msg.attach(MIMEText(body, 'plain'))
+        else:
+            body = 'Dear Sir/Madam, \n\nFor some reason, your request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!'
+            msg.attach(MIMEText(body, 'plain'))
 
         text = msg.as_string()
         #login to mail
@@ -112,8 +115,14 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         server.sendmail(self.email_address,email_from_email_address, text)
         print('Negative response sent!')
         server.quit()
+
+        log_file = open(os.path.join(ASSET_PATH, 'log.txt'), 'a')
+        print("Writing log file")
+        log_file.write("FAILED: " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + " " + scenario + "\n")
+        log_file.close()
+
     
-    def sendReport(self, eventTable, filename, email_from_name, email_from_email_address, email_subject):
+    def send_report(self, eventTable, filename, email_from_name, email_from_email_address, email_subject):
         '''
         Sends the report to the person that requested a report.
         Takes in self from the EmailClass
@@ -150,8 +159,14 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         server.sendmail(self.email_address,email_from_email_address, text)
         print('Report sent!')
         server.quit()
+
+        log_file = open(os.path.join(ASSET_PATH, 'log.txt'), 'a')
+        print("Writing log file")
+        log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + "\n")
+        log_file.close()
+
         
-    def deleteMessages(self, mail):
+    def delete_messages(self, mail):
         '''
         Deletes the processed message in the Inbox, and the 'Sent box'.
         
@@ -177,7 +192,7 @@ class EmailClass: # This class handles all functions related to fetching, downlo
         print('Trash box emptied!')
         
         
-    def logOut(self, mail):
+    def log_out_mailserver(self, mail):
         '''
         Input parameter type impaplib.IMP4_SSL
         '''
