@@ -5,7 +5,7 @@ To do so, it fetches emails with a Calendar (*.ics file) attachement that are se
 
 #### Good to know
 
-The script runs every 5 minutes. Hence, it can take up to 5 minutes for the request to receive an answer.
+The script runs every 2 minutes. Hence, it can take up to 2 minutes for the request to receive an answer.
 
 The processing logic assumes a certain naming convention for calendar 
 events. Rules that have been implemented for processing the Calendar:
@@ -16,13 +16,13 @@ events. Rules that have been implemented for processing the Calendar:
 
 Thus, calendar events should ideally be named in the form of "PROJECT_phase additional explanation", e.g. "CAVD_presentatie sketch-up". 
 The latter part, "sketch-up" comes after the first space, therefore it will be ignored in the report, but allows to add enough information on calendar events. 
-Enforcing the events to contain an underscore is neccessary to prohibit certain (full day) non-relevant events, such as 'verjaardag persoon x' to be counted as billable hours.   
+Enforcing the events to contain an underscore is neccessary to prohibit certain (full day) non-relevant events, such as 'verjaardag persoon x', to be counted as billable hours.   
 
 #### GDPR
 
 Special measures have been set to ensure privacy:
 * the mailbox is dedicated for this purpose, the credentials can be distributed to the ones interested to verify;
-* the script runs every 5 minutes. When running, received messages, if any, are processed and deleted immediately. Thus, messages sent to this mailbox will be in the emailserver for no longer than 5 minutes;
+* the script runs every 2 minutes. When running, received messages, if any, are processed and deleted immediately. Thus, messages sent to this mailbox will be in the emailserver for no longer than 2 minutes;
 * the downloaded .ics attachment is deleted at the end of the script;
 * the report that is composed is deleted at the end of the script;
 * the reply with the report is deleted at the end of the script.
