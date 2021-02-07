@@ -9,7 +9,7 @@ from email.parser import HeaderParser
 import smtplib
 import os
 from datetime import datetime
-from definitions import ASSET_PATH
+from definitions import TMP_PATH
 
 
 class EmailClass:  # This class handles all functions related to fetching, downloading, and sending mails
@@ -77,7 +77,7 @@ class EmailClass:  # This class handles all functions related to fetching, downl
                 continue
             fileName = part.get_filename()
             if bool(fileName) and "Calendar.ics" in fileName:
-                filePath = os.path.join(os.getcwd(), fileName)
+                filePath = os.path.join(TMP_PATH, fileName)  # save to /tmp for AWS lambda, instead of os.getcwd()
                 with open(filePath, 'wb') as f:
                     f.write(part.get_payload(decode=True))
                     print("Saved attachment: " + fileName)
@@ -116,10 +116,13 @@ class EmailClass:  # This class handles all functions related to fetching, downl
         print('Negative response sent!')
         server.quit()
 
-        log_file = open(os.path.join(ASSET_PATH, 'log.txt'), 'a')
-        print("Writing log file")
-        log_file.write("FAILED: " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + " " + scenario + "\n")
-        log_file.close()
+        # log_file = open(os.path.join(ASSET_PATH, 'log.txt'), 'a')
+        # print("Writing log file")
+        # log_file.write("FAILED: " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + " " + scenario + "\n")
+        # log_file.close()
+        
+        # use AWS cloudwatch logs
+        print("FAILED: " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + " " + scenario + "\n")
 
     
     def send_report(self, eventTable, filename, email_from_name, email_from_email_address, email_subject):
@@ -143,7 +146,7 @@ class EmailClass:  # This class handles all functions related to fetching, downl
         body = 'Dear '+ name + ',\n\nAccording to your agenda, you have worked ' + str(eventTable['Duur'].sum()) + ' hours last month. \nIn attachment, you can find the worked hours per project phase, as they appeared in your agenda.\n\nFor checking purposes, the hours worked per day were as follows:\n\n' + eventTable.groupby('Day').sum()['Duur'].to_string() + '\n\n\nHope this helps. \nSee you next month!\n\n\n\nDocumentation: https://github.com/tfdgrand/Fee_note'
         msg.attach(MIMEText(body,'plain'))
 
-        attachment = open(filename, 'rb')
+        attachment = open(os.path.join(TMP_PATH, filename), 'rb')
         part = MIMEBase('application', 'octet-stream')
         part.set_payload(attachment.read())
         encoders.encode_base64(part)
@@ -160,10 +163,13 @@ class EmailClass:  # This class handles all functions related to fetching, downl
         print('Report sent!')
         server.quit()
 
-        log_file = open(os.path.join(ASSET_PATH, 'log.txt'), 'a')
-        print("Writing log file")
-        log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + "\n")
-        log_file.close()
+        # log_file = open(os.path.join(ASSET_PATH, 'log.txt'), 'a')
+        # print("Writing log file")
+        # log_file.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + "\n")
+        # log_file.close()
+
+        # use AWS cloudwatch logs
+        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S") +": " + email_from_email_address + "\n")
 
         
     def delete_messages(self, mail):

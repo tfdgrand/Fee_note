@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 import os
 import iso8601
+from definitions import TMP_PATH
 
 
 class ProcessClass:
@@ -13,7 +14,7 @@ class ProcessClass:
         self.filename = filename
 
     def read_data(self):
-        c = Calendar(open(self.filename, 'rb').read().decode('iso-8859-1'))
+        c = Calendar(open(os.path.join(TMP_PATH, self.filename), 'rb').read().decode('iso-8859-1'))
         c_list = list(c.events)
         if len(c_list) == 0:
             return None
@@ -72,7 +73,7 @@ class ProcessClass:
         return hour_table
 
     def edit_excel(self, file_attached, first, last):
-        wb = load_workbook(file_attached)
+        wb = load_workbook(os.path.join(TMP_PATH,file_attached))
         ws = wb.active
 
         ws.delete_cols(1)
@@ -100,10 +101,12 @@ class ProcessClass:
         ws.cell(row=1, column=1).font = fontStyle
 
         # save the file 
-        wb.save(file_attached)
+        wb.save(os.path.join(TMP_PATH,file_attached))
         wb.close()
 
     def delete_file(self, file_attached):
-        os.remove(file_attached)
-        os.remove(self.filename)
+        os.remove(os.path.join(TMP_PATH, file_attached))
+        os.remove(os.path.join(TMP_PATH, self.filename))
         print("Downloaded attachment and drafted report deleted!")
+    
+
