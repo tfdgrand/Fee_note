@@ -76,7 +76,7 @@ class EmailClass:  # This class handles all functions related to fetching, downl
             if part.get('Content-Disposition') is None:
                 continue
             fileName = part.get_filename()
-            if bool(fileName) and "Calendar.ics" in fileName:
+            if bool(fileName) and ".ics" in fileName:
                 filePath = os.path.join(TMP_PATH, fileName)  # save to /tmp for AWS lambda, instead of os.getcwd()
                 with open(filePath, 'wb') as f:
                     f.write(part.get_payload(decode=True))
