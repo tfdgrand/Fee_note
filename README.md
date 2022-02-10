@@ -9,7 +9,7 @@ The script runs every 2 minutes. Hence, it can take up to 2 minutes for the requ
 
 The processing logic assumes a certain naming convention for calendar 
 events. Rules that have been implemented for processing the Calendar:
-* the script considers all events present in the Calendar attachment. It is the responsibility of the sender to specify the dates for which a report is desired correctly;
+* the script considers all events present in the Calendar attachment. It is the responsibility of the sender to specify the dates for which a report is desired correctly. Note that multi-month calculations are not supported;
 * only calendar events that contain an underscore ("_") are included in the report;
 * the names of the calendar events are cut off at the first space (" ");
 * finally, duration of events are added based on date and project name.
