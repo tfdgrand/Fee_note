@@ -1,11 +1,11 @@
+**Note that it is not possible to make requests for periods involving multiple months. Don't hesitate to drop a message if this is a feature you need.**
+
 ## Calendar hour calculator
 
 This script helps in drafting monthly fee notes by providing an overview of the worked hours per day and per project phase, based on your calendar. 
 To do so, it fetches emails with a Calendar (*.ics file) attachment that are sent to a dedicated emailbox and answers the mail with an excel report with the aggregated hours per date and project.
 
 #### Good to know
-
-**Note that it is not possible to make requests for periods involving multiple months. Don't hesitate to drop a message if this is a feature you need.**
 
 The script runs every 2 minutes. Hence, it can take up to 2 minutes for the request to receive an answer.
 
