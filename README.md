@@ -5,6 +5,8 @@ To do so, it fetches emails with a Calendar (*.ics file) attachment that are sen
 
 #### Good to know
 
+**Note that it is not possible to make requests for periods involving multiple months. Don't hesitate to drop a message if this is a feature you need.**
+
 The script runs every 2 minutes. Hence, it can take up to 2 minutes for the request to receive an answer.
 
 The processing logic assumes a certain naming convention for calendar 
