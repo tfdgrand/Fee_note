@@ -73,13 +73,20 @@ def main():
                 count = int(m.check_mails(mail))
             else:
                 p = ProcessClass(icsfile)
-                event_list = p.read_data()
+                event_list, error = p.read_data()
                 if event_list is None:
-                    m.send_negative_response(email_from_email_address, email_subject, "empty_calendar")
+                    m.send_negative_response(email_from_email_address, email_subject, error)
+                    # print("Failed to send negative response.. Deleting anyway.")
                     m.delete_messages(mail)  # Inbox message (b'1') and Sent box!
                     count = int(m.check_mails(mail))
                     continue
-                eventTable, last, first = p.create_event_table(p.read_data())
+
+                eventTable, last, first = p.create_event_table(event_list)
+                if eventTable is None:
+                    m.send_negative_response(email_from_email_address, email_subject, "Timeframe spans multiple months, which is not supported for now. Please use a timeframe within one month, e.g. June 1st to June 30th")
+                    m.delete_messages(mail)  # Inbox message (b'1') and Sent box!
+                    count = int(m.check_mails(mail))
+                    continue
                 p.add_duration(eventTable, p.create_hour_table(eventTable)).to_excel(os.path.join(TMP_PATH, file_attached))
                 p.edit_excel(file_attached, first, last)
                 m.send_report(eventTable, file_attached, email_from_name, email_from_email_address, email_subject)

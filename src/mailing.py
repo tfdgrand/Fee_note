@@ -103,7 +103,7 @@ class EmailClass:  # This class handles all functions related to fetching, downl
             body = 'Dear Sir/Madam, \n\nIt seems that your calendar has no events. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!'
             msg.attach(MIMEText(body, 'plain'))
         else:
-            body = 'Dear Sir/Madam, \n\nFor some reason, your request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!'
+            body = f'Dear Sir/Madam, \n\nFor the reason stated below, your request was invalid. Please have a look at the instructions at https://github.com/tfdgrand/Fee_note and retry. \n\nSee you soon!  \n\n------\nError:\n{scenario}'
             msg.attach(MIMEText(body, 'plain'))
 
         text = msg.as_string()

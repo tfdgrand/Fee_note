@@ -14,12 +14,16 @@ class ProcessClass:
         self.filename = filename
 
     def read_data(self):
-        c = Calendar(open(os.path.join(TMP_PATH, self.filename), 'rb').read().decode('iso-8859-1'))
-        c_list = list(c.events)
+        try:
+            c = Calendar(open(os.path.join(TMP_PATH, self.filename), 'rb').read().decode('iso-8859-1'))
+            c_list = list(c.events)
+        except Exception as e:
+            print(e)
+            return None, str(e)
         if len(c_list) == 0:
-            return None
+            return None, "empty_calendar"
         else:
-            return c
+            return c, None
 
     def create_event_table(self, c):
         '''
@@ -32,6 +36,9 @@ class ProcessClass:
 
         first = iso8601.parse_date(str(c_list[0].begin))  # FIFO"%Y-%m-%dT%H:%M:%S%z")
         last = iso8601.parse_date(str(c_list[len(c_list) - 1].begin))
+
+        if first.month != last.month:
+            return None, None, None
 
         for e in c.events:
             start = iso8601.parse_date(str(e.begin))
